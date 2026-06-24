@@ -121,9 +121,3 @@ Success response:
   }
 }
 ```
-
-## Notes
-
-- No screenshots are required for this backend project.
-- For production use, replace the local JSON storage with a real database.
-- Keep `.env` private and do not commit it to the repository.
