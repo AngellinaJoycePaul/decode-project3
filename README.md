@@ -1,31 +1,31 @@
-# Project 3 - Secure Authentication 
-**Decode Labs Backend Development Internship**
+# Project 3 - Secure Authentication System
+**DecodeLabs Backend Development Internship**
 Built by: Angellina Joyce Paul
 
 ## About
 
-A minimal backend implementation for a secure authentication flow using Argon2id password hashing, JSON Web Tokens, and protected API routes.
-
-## Features
-
-- Password hashing with Argon2id and OWASP-recommended parameters
-- JWT issuance on successful login
-- Middleware-protected routes requiring `Authorization: Bearer <token>`
-- Simple user storage using a local JSON file
+This repository demonstrates a secure backend authentication system using modern security best practices. It includes password hashing with Argon2id, JWT generation at login, and protected API routes enforced by middleware.
 
 ## Tech Stack
 
 - Node.js
 - Express
-- Argon2
+- Argon2id (`argon2`)
 - JSON Web Tokens (`jsonwebtoken`)
-- dotenv for environment variables
+- dotenv for environment configuration
 - nodemon for local development
+
+## Key Features
+
+- Secure password hashing before storage
+- JWT issuance on successful login
+- Protected route requiring a valid bearer token
+- Environment-based secret management via `.env`
 
 ## Setup
 
 1. Copy `.env.example` to `.env`
-2. Set `JWT_SECRET` to a strong secret
+2. Set a secure `JWT_SECRET` in `.env`
 3. Install dependencies:
 
 ```bash
@@ -38,15 +38,92 @@ npm install
 npm run dev
 ```
 
+5. Visit the API root:
+
+```bash
+http://localhost:5000/
+```
+
+## Environment Variables
+
+Copy the example values and replace the placeholder secret:
+
+```env
+PORT=5000
+JWT_SECRET=your_jwt_secret_here
+JWT_EXPIRES_IN=1h
+```
+
 ## API Endpoints
 
-- `POST /api/register`
-  - body: `{ "email": "user@example.com", "password": "secret" }`
-- `POST /api/login`
-  - body: `{ "email": "user@example.com", "password": "secret" }`
-- `GET /api/profile`
-  - header: `Authorization: Bearer <token>`
+### Register a new user
+
+`POST /api/register`
+
+Request body:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "secret"
+}
+```
+
+Success response:
+
+```json
+{
+  "id": "1",
+  "email": "user@example.com"
+}
+```
+
+### Login and receive a JWT
+
+`POST /api/login`
+
+Request body:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "secret"
+}
+```
+
+Success response:
+
+```json
+{
+  "token": "<jwt-token>",
+  "expiresIn": "1h"
+}
+```
+
+### Access protected profile data
+
+`GET /api/profile`
+
+Headers:
+
+```http
+Authorization: Bearer <jwt-token>
+```
+
+Success response:
+
+```json
+{
+  "message": "Protected profile data",
+  "user": {
+    "id": "1",
+    "email": "user@example.com"
+  }
+}
+```
 
 ## Notes
 
-This project is intentionally focused on authentication fundamentals and secure handling of credentials. For production, connect to a real database and use secure secrets management.
+- No screenshots are required for this backend project.
+- For production use, replace the local JSON storage with a real database.
+- Keep `.env` private and do not commit it to the repository.
